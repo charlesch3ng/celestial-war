@@ -1,6 +1,7 @@
 import pygame
 from celestial_war import GameBoard
 
+
 # Initialize pygame
 pygame.init()
 
@@ -8,6 +9,7 @@ pygame.init()
 WIDTH, HEIGHT = 800, 800
 BACKGROUND_COLOR = (30, 30, 30)
 GRID_COLOR = (230, 230, 230)
+SQUARE_SIZE = WIDTH // 10
 
 # Create the game window
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -17,7 +19,6 @@ pygame.display.set_caption("Celestial War")
 game_board = GameBoard()
 
 def draw_board():
-    square_size = WIDTH // 10
 
     for x in range(10):
         for y in range(10):
@@ -27,9 +28,10 @@ def draw_board():
                 piece_color = piece.color.lower()
                 image_key = f"{piece_color}_{piece_type}"
                 image = piece_images[image_key]
-                screen.blit(image, (x * square_size, y * square_size))
+                screen.blit(image, (x * SQUARE_SIZE, y * SQUARE_SIZE))
 
-            rect = pygame.Rect(x * square_size, y * square_size, square_size, square_size)
+            rect = pygame.Rect(x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
+
             pygame.draw.rect(screen, GRID_COLOR, rect, 1)
 
 
@@ -42,8 +44,8 @@ def load_piece_images():
         for piece in pieces:
             image_name = f"{color}_{piece}.png"
             image = pygame.image.load(f"images/{image_name}")
-            images[f"{color}_{piece}"] = image
-
+            scaled_image = pygame.transform.scale(image, (SQUARE_SIZE, SQUARE_SIZE))
+            images[f"{color}_{piece}"] = scaled_image
     return images
 
 
